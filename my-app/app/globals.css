@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   THEKHANSTORIES — design tokens
+   Warm editorial palette. Edit these once to re-theme the whole site.
+------------------------------------------------------------------- */
+@theme inline {
+  /* Surfaces */
+  --color-paper: #f4f1ea;
+  --color-paper-deep: #ece7dd;
+  --color-ink: #14120f;
+  --color-ink-soft: #3d3a34;
+  --color-muted: #6e6759;
+  --color-line: #d8d1c3;
+  --color-accent: #c14f2b;
+
+  /* Type families */
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+
+  /* Display scale */
+  --text-hero: clamp(3rem, 12vw, 13.5rem);
+  --text-hero--line-height: 0.82;
+  --text-hero--letter-spacing: -0.03em;
+
+  --text-section: clamp(2.4rem, 6vw, 6.25rem);
+  --text-section--line-height: 0.92;
+  --text-section--letter-spacing: -0.025em;
+
+  --text-cta: clamp(2.5rem, 7.5vw, 7.75rem);
+  --text-cta--line-height: 0.9;
+  --text-cta--letter-spacing: -0.025em;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchors so headers never sit under the fixed navbar */
+    scroll-padding-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* Small uppercase editorial label */
+  .label {
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* Repeating subtle treatment used for empty image/video areas */
+  .placeholder-bg {
+    background-color: var(--color-paper-deep);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--color-ink) 4%, transparent) 0px,
+      color-mix(in srgb, var(--color-ink) 4%, transparent) 10px,
+      transparent 10px,
+      transparent 22px
+    );
+  }
+
+  /* Ghost number that sits behind project titles */
+  .ghost-number {
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--color-ink) 16%, transparent);
+  }
+
+  /* Underline-on-hover for inline text links */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    transition: background-size 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    padding-bottom: 0.1em;
+  }
+
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+}
+
+/* --- Marquee strip ------------------------------------------------- */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 36s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* --- Overlapping project stack ------------------------------------- */
+/*
+ * Each project card is a sticky "print". Cards pin at staggered tops
+ * (--stack-top + index * --peek) inside the stack container, so every
+ * previous card keeps a strip visible behind the current one — a deck.
+ */
+.stack-card {
+  --stack-top: 76px;
+  --peek: 26px;
+}
+
+@media (min-width: 768px) {
+  .stack-card {
+    --stack-top: 88px;
+    --peek: 46px;
+  }
+}
+
+/* --- Showreel play button ping ------------------------------------- */
+@keyframes ping-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+.play-ring {
+  animation: ping-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .play-ring {
+    animation: none;
+  }
+}
